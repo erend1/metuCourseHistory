@@ -104,6 +104,8 @@ class Course:
             query=query,
             operations=operations,
             steps=4
+        ).sort(
+            {"semester._id": -1}
         )
         return query
 

@@ -1,7 +1,6 @@
 import logging
 import os
 import sys
-
 import pandas as pd
 
 
@@ -81,6 +80,11 @@ class Logger:
     def get_connector_logger(self):
         self._level = logging.INFO
         self.update_logger_attr(file_name="connect.log")
+        return self.get_logger()
+
+    def get_saver_logger(self):
+        self._level = logging.INFO
+        self.update_logger_attr(file_name="saver.log")
         return self.get_logger()
 
     def get_parser_logger(self):
@@ -248,7 +252,7 @@ def semester_id(semester_name: str, separation_char: str = "-"):
     codes = {
         "Fall": "1",
         "Spring": "2",
-        "Summer School": "3"
+        "Summer": "3"
     }
     if separation_char in semester_name:
         main_id = semester_name.split(
