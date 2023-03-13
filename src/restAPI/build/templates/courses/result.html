@@ -1,0 +1,47 @@
+{% extends "base/main_base.html" %}
+{% block page_title %}Course{% endblock %}
+{% block main_title %}Course History{% endblock %}
+{% block in_container_content %}
+<!-- MAIN FORM -->
+<div class="text-center mx-5 mb-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <p align="justify">
+                    Each record in the following table will be corresponding
+                    to the information of the provided course opened in these
+                    semesters, and given by these instructors. If the table is
+                    empty, and course name is None, then please check the course
+                    id. If the course id is valid but still there is empty table,
+                    meaning that there is no record saved in the database.
+                </p>
+                <p align="justify">
+                    Course ID: {{course_id}}
+                </p>
+                <p align="justify">
+                    Course Name: {{course_name}}
+                </p>
+                <!-- Table -->
+                <h4 class="border-bottom mb-5"> Records </h4>
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        {{data_frame | safe}}
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<!-- Back Button -->
+<div class="d-grid gap-2 d-md-block">
+    <a
+            id="back"
+            type="button"
+            class="btn btn-danger"
+            href="{{ url_for('courses.index') }}"
+            aria-disabled="false"
+    >
+        Back
+    </a>
+</div>
+{% endblock %}
+
