@@ -1,3 +1,5 @@
+import json
+
 import mongoengine
 import pandas as pd
 
@@ -122,32 +124,58 @@ class Course:
             course = course.name
         return course
 
-    def get_records(
+    def get_course_df(
             self
+    ):
+        course = self.get_course()
+        course_data = json.loads(
+            course.to_json()
+        )
+        data_frame = pd.Series(
+            data=course_data
+        ).to_frame(
+            name="course"
+        )
+        return data_frame
+
+    def get_records(
+            self,
+            simplified: bool = True
     ) -> QueryPipeline:
         query = self.record_look_up()
-        new_fields = {
-            "semesterId": "semester._id",
-            "semesterName": "semester.name",
-            "courseId": "course._id",
-            "courseName": "course.name",
-            "courseType": "course.type",
-            "courseLevel": "course.level",
-            "courseScheduler": "course.scheduler",
-            "courseService": "course.service",
-            "courseCredit": "course.credit",
-            "courseCreditECTS": "course.creditECTS",
-            "courseCreditLaboratory": "course.creditLaboratory",
-            "courseCreditTheory": "course.creditTheory",
-            "courseCreditApplication": "course.creditApplication",
-            "courseSection": "section",
-            "courseCapacity": "capacity",
-            "courseCapacityExchange": "capacityExchange",
-            "courseCapacityExchangeUsed": "capacityExchangeUsed",
-            "courseStatus": "status",
-            "instructorName": "instructor.name",
-            "instructorTitle": "instructor.title"
-        }
+        if simplified:
+            new_fields = {
+                "semesterId": "semester._id",
+                "semesterName": "semester.name",
+                "courseSection": "section",
+                "courseCapacity": "capacity",
+                "courseStatus": "status",
+                "instructorName": "instructor.name",
+                "instructorTitle": "instructor.title"
+            }
+        else:
+            new_fields = {
+                "semesterId": "semester._id",
+                "semesterName": "semester.name",
+                "courseId": "course._id",
+                "courseName": "course.name",
+                "courseType": "course.type",
+                "courseLevel": "course.level",
+                "courseScheduler": "course.scheduler",
+                "courseService": "course.service",
+                "courseCredit": "course.credit",
+                "courseCreditECTS": "course.creditECTS",
+                "courseCreditLaboratory": "course.creditLaboratory",
+                "courseCreditTheory": "course.creditTheory",
+                "courseCreditApplication": "course.creditApplication",
+                "courseSection": "section",
+                "courseCapacity": "capacity",
+                "courseCapacityExchange": "capacityExchange",
+                "courseCapacityExchangeUsed": "capacityExchangeUsed",
+                "courseStatus": "status",
+                "instructorName": "instructor.name",
+                "instructorTitle": "instructor.title"
+            }
 
         for key, value in new_fields.items():
             query.add_field(
@@ -192,11 +220,4 @@ class Course:
 if __name__ == "__main__":
     api = Course(
         2360111
-    )
-    all_records = api.get_records_df()
-    print(
-        all_records
-    )
-    print(
-        api.get_all_course_ids()
     )

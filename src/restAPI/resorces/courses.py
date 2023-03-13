@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, url_for, request, redirect
 from src.mainAPI.courses.Courses import Course
-from src.utils.Utils import courses_index_form
+from src.utils.Utils import courses_index_form, convert_df_to_html
 
 
 courses = Blueprint("courses", __name__, url_prefix="/courses")
@@ -35,20 +35,17 @@ def index():
 def result(course_id: int):
     course = Course(course_id=course_id)
     course_name = course.get_course_name()
-    data_frame = course.get_records_df()
-    data_frame = data_frame.to_html(
-        index=False,
-        justify="center",
-        col_space=120,
-        show_dimensions=True
-    ).replace(
-        "class=\"dataframe\"",
-        "class =\"table table-striped-responsive\""
+    course_info = convert_df_to_html(
+        data=course.get_course_df()
     )
-
+    records = convert_df_to_html(
+        data=course.get_records_df(),
+        index=False
+    )
     return render_template(
         template_name_or_list="/courses/result.html",
-        data_frame=data_frame,
+        records=records,
+        course_info=course_info,
         course_id=course_id,
         course_name=course_name
     )

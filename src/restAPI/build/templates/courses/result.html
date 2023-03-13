@@ -21,10 +21,17 @@
                     Course Name: {{course_name}}
                 </p>
                 <!-- Table -->
+                <h4 class="border-bottom mb-5"> Course Info </h4>
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        {{course_info | safe}}
+                    </div>
+                </div>
+                <!-- Table -->
                 <h4 class="border-bottom mb-5"> Records </h4>
                 <div class="row justify-content-center">
                     <div class="col-auto">
-                        {{data_frame | safe}}
+                        {{records | safe}}
                     </div>
                 </div>
             </div>
